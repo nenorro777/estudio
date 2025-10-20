@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="es">
+        <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Plataforma de Estudio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        body.with-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('perro.png') center/cover no-repeat fixed;
+            opacity:  0.4;
+            z-index: -1;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+            position: relative;
+        }
+
+        .background-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+        }
+
+        .background-toggle:hover {
+            background: linear-gradient(45deg, #9d4edd, #bb86fc);
+            transform: scale(1.05);
+        }
+
+        h1 {
+            color: #bb86fc;
+            font-size: 2rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #9d4edd;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .countdown-container {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(145deg, rgba(123, 44, 191, 0.3), rgba(157, 78, 221, 0.3));
+            border-radius: 15px;
+            border: 2px solid rgba(187, 134, 252, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-title {
+            color: #bb86fc;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            min-width: 80px;
+            box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+        }
+
+        .time-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .time-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            margin-top: 0.3rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+            border: none;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(157, 78, 221, 0.6);
+            background: linear-gradient(45deg, #9d4edd, #bb86fc);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #bb86fc, #d4a5ff);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1e1e2e, #252535);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(187, 134, 252, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(187, 134, 252, 0.4);
+            border-color: #bb86fc;
+        }
+
+        .card h3 {
+            color: #bb86fc;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+            margin: 1rem 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pdf-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #5a189a, #7209b7);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .pdf-link:hover {
+            background: linear-gradient(45deg, #7209b7, #9d4edd);
+            transform: scale(1.05);
+        }
+
+        .pdf-info {
+            background: rgba(187, 134, 252, 0.1);
+            padding: 0.8rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .video-subsection {
+            margin-bottom: 3rem;
+        }
+
+        .subsection-title {
+            color: #d4a5ff;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(187, 134, 252, 0.3);
+            text-shadow: 0 0 10px rgba(212, 165, 255, 0.3);
+        }
+
+        .calendar-section {
+            background: linear-gradient(145deg, #1e1e2e, #252535);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(187, 134, 252, 0.2);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .streak-info {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .streak-box {
+            background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+        }
+
+        .streak-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            display: block;
+        }
+
+        .streak-label {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            margin-top: 0.3rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .day-card {
+            background: rgba(30, 30, 46, 0.6);
+            border: 2px solid rgba(187, 134, 252, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .day-card:hover {
+            transform: translateY(-3px);
+            border-color: #bb86fc;
+            box-shadow: 0 4px 15px rgba(187, 134, 252, 0.3);
+        }
+
+        .day-card.completed {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            border-color: #4caf50;
+        }
+
+        .day-card.completed .checkmark {
+            display: block;
+        }
+
+        .day-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #bb86fc;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-card.completed .day-number {
+            color: white;
+        }
+
+        .day-label {
+            font-size: 0.75rem;
+            color: #b0b0b0;
+        }
+
+        .day-card.completed .day-label {
+            color: white;
+        }
+
+        .checkmark {
+            display: none;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .goal-text {
+            color: #d4a5ff;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .reset-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(45deg, #c0392b, #a93226);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subsection-title {
+                font-size: 1.4rem;
+            }
+
+            .background-toggle {
+                position: static;
+                margin: 1rem auto 0;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="background-toggle" onclick="toggleBackground()">🖼️ El que lo lea es gay, Fondo</button>
+        <h1>📚 La maldita plataforma super xxx</h1>
+        <p class="subtitle">Versión no recuerdo de tanto que la modifique</p>
+        
+        <div class="countdown-container">
+            <div class="countdown-title">⏰ Cuenta Regresiva para el putisimo Examen</div>
+            <div class="countdown-timer">
+                <div class="time-box">
+                    <span class="time-value" id="days">22</span>
+                    <span class="time-label">Días</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">Horas</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">Minutos</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Segundos</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav>
+            <button class="nav-btn active" onclick="showSection('videos')">🎥 Videos</button>
+            <button class="nav-btn" onclick="showSection('pdfs')">📄 PDF</button>
+            <button class="nav-btn" onclick="showSection('practicas')">✏️ Prácticas, Ejercicios y Examenes</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Sección de Videos -->
+        <div id="videos" class="section active">
+            <!-- Primeras Clases -->
+            <div class="video-subsection">
+                <h2 class="subsection-title">🎬 Primeras Clases</h2>
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Todo sobre Programación</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/ELSm-G201Ls" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>Introducción completa a la programación y sus conceptos fundamentales.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Conceptos Básicos</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>Fundamentos esenciales para comenzar tu camino en el desarrollo.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Clases Regulares --> 
+            <div class="video-subsection">
+                <h2 class="subsection-title">📚 Clases Regulares</h2>
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Tema Principal</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>Desarrollo del contenido principal del curso.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Profundización</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>Análisis detallado de conceptos avanzados.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Aplicaciones Prácticas</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>Ejemplos prácticos y casos de uso reales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clases de Refuerzo -->
+            <div class="video-subsection">
+                <h2 class="subsection-title">🔄 Clases de Refuerzo - EXANI II 2da Vuelta con el Profe Cristian</h2>
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Tema 1: Razones y proporciones</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/P0FDxwomc7c" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Conceptos fundamentales de razones y proporciones.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Tema 2: Preguntas de Polinomios</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/hCpQ6e68zOU" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Ejercicios prácticos de polinomios.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 3: Estimación de trayectorias</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/RZWrkNdSSsI" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Análisis de trayectorias.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 4: Cuartiles y deciles</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/A8s1Hif_k_c" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Estadística descriptiva.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 5: Ejercicios de Inecuaciones</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/j37AfhN_cEQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Resolución de inecuaciones.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 6: Comprensión Lectora</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/3JVXhmq5L8U" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Técnicas de comprensión lectora.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 7: Cómo leer un cuento en el examen</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/9ZGacBTZvJU" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Estrategias para analizar cuentos.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 8: Texto argumentativo - Yo soy Malala</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/6_dkT8QziOw" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Análisis de textos argumentativos.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 9: Cómo leer un poema en el examen</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/R4maRXk3TtQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Interpretación de poesía.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 10: Ejercicios de razones trigonométricas</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/IiorssZL2GI" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Trigonometría aplicada.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 11: Representación gráfica de ecuaciones</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/R3Kl7GXRH6Q" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Gráficas de funciones.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 12: Comportamiento Gráfico de Funciones Cuadráticas</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/BJxDwQ0xIz4" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Análisis de parábolas.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 13: Documento Administrativo en Comprensión Lectora</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/bhsyKP2dRCE" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Lectura de documentos formales.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 14: Te explico la sección de Redacción Indirecta</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/yfHM3xzDUmw" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Redacción y estilo.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 15: Probabilidad con dados</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/0aYqW2s4j2g" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Cálculo de probabilidades.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 16: El cabo Cheo</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/0aYqW2s4j2g" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Análisis literario.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tema 17: 10 preguntas de examen - Redacción Indirecta</h3>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/uORlVKs2YqQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p>UANL - Práctica de redacción.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de PDFs -->
+        <div id="pdfs" class="section">
+            <h2 class="subsection-title">📚 Material de Estudio</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Libro de Español</h3>
+                    <p>Material completo con ejercicios y ejemplos.</p>
+                    <div class="pdf-info">
+                        💡 <strong>Nota:</strong> Si no se puede descargar, verifica tu conexión.
+                    </div>
+                    <a href="https://drive.google.com/uc?export=download&id=1LuEN4YuYyEGJ998FWdEJ5oASFrpGJmqc" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Libro de Matemáticas</h3>
+                    <p>Material completo con ejercicios y ejemplos.</p>
+                    <div class="pdf-info">
+                        💡 <strong>Nota:</strong> Si no se puede descargar, verifica tu conexión.
+                    </div>
+                    <a href="https://drive.google.com/uc?export=download&id=1yyxmUt00WwhLQm17hDi-_yKiq_A1TXP5" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+        </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">📚 Guías de Estudio</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Guía 1</h3>
+                    <p>Material complementario de estudio.</p>
+                    <a href="https://drive.google.com/file/d/1QqerztdmDD7esUEYiwDAegyxuSHX1dUe/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Guía 2</h3>
+                    <p>Material complementario de estudio.</p>
+                    <a href="https://drive.google.com/file/d/1M7aqSE05zgQZEQnNMcDQYG55KfnjwL_7/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Guía 3</h3>
+                    <p>Material complementario de estudio.</p>
+                    <a href="https://drive.google.com/file/d/14i3mJcmGs0Du7gJW5s9cbxuoB2NzoO6h/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">🏥 Ciencias de la Salud</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Examen Ciencias de la Salud</h3>
+                    <p>Evaluación práctica.</p>
+                    <a href="https://drive.google.com/file/d/1qIfcCP2qYQQCABzs1pP6-DNphtEsUrtu/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Actividad Ciencias de la Salud 1</h3>
+                    <p>Ejercicios de ciencias de la salud.</p>
+                    <a href="https://drive.google.com/file/d/190gyhm9A3BFDQmbpBrfK98ZnxDF0ptgw/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Actividad Ciencias de la Salud 2</h3>
+                    <p>Ejercicios de ciencias de la salud.</p>
+                    <a href="https://drive.google.com/file/d/1cYOSvtAvZPqK_mZh88RqxlTZR1fbT3ir/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">🧬 Biología</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Biología 1</h3>
+                    <p>Ejercicios de biología.</p>
+                    <a href="https://drive.google.com/file/d/1_1uZuJIiT1J8TPvmx-zuSF_zzb0a0ASW/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Biología 2</h3>
+                    <p>Ejercicios de biología.</p>
+                    <a href="https://drive.google.com/file/d/1sb-Jl3nW6jL7xaYUC3JudFoYivQQ7Im9/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">🎲 Probabilidad y Estadística</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Probabilidad y Estadística</h3>
+                    <p>Ejercicios de probabilidad y estadística.</p>
+                    <a href="https://drive.google.com/file/d/1LjchR4nYN4hV0ZzTtcSU1xIs9OcIvPGa/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Prácticas -->
+        <div id="practicas" class="section">
+            <!-- Calendario de 30 Días -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <div>
+                        <h2 class="subsection-title" style="margin: 0;">📅 Calendario de Estudio - 30 Días</h2>
+                        <p class="goal-text">🎯 Meta: Estudiar 2 horas o más cada día</p>
+                    </div>
+                    <div class="streak-info">
+                        <div class="streak-box">
+                            <span class="streak-number" id="currentStreak">0</span>
+                            <span class="streak-label">🔥 Racha Actual</span>
+                        </div>
+                        <div class="streak-box">
+                            <span class="streak-number" id="totalCompleted">0</span>
+                            <span class="streak-label">✅ Días Completados</span>
+                        </div>
+                        <div class="streak-box">
+                            <span class="streak-number" id="bestStreak">0</span>
+                            <span class="streak-label">🏆 Mejor Racha</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="reset-btn" onclick="resetCalendar()">🔄 Reiniciar Calendario</button>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <h2 class="subsection-title">📝 Actividades de Español</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Actividad Español 1</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1kv1uYyaUDBz9b_EV9aPolNbiLkwGhfWZ/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 2</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/12lMbD49JTh0pjBMGeeXR5z_CVjpGxyIy/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 3</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1251oFPoTPZeOvrwf6S8L9pMBsm8LkRVJ/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 4</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1SxcrgGZdPhNS1T8iC6pRe7rKAbeKS_VN/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 5</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1BdcQ56Q-bbTa5CgXAbnNznJGPxpRuARh/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 6</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1gBNweKsGnmIw_3sJCDHjreRHSTzYf-in/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 7</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1DILfLFPecZlwiFPD3-zshBbC1yyk-teh/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 8</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1s_0Ow_YUtkrYxlrLDu_stYriEZdcpoIy/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 9</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1y3LNJHFC6OQPwLS3UbucCgnhCq_-h2j7/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Actividad Español 10</h3>
+                    <p>Ejercicios de español.</p>
+                    <a href="https://drive.google.com/file/d/1qlRahzlv23BvQU_2Imx7zEHeW0kVN30e/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">🔢 Razonamiento Matemático</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 1</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/1R1VuLniSkCmy1n7llb1HIBh50-SdMJOr/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 2</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/1QggcwZKyvftydOLuLfkOUOCNtFkbJyGn/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 3</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/1HlbdTgIQYvXySkQEDVt76L7NOOL0hj7X/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 4</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/1heh-JuCwJhiR950qVMbALWz1c42U9MJB/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 5</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/1sv1QIP4TdhfIkQoDGg5AoZMHgyr0yFMJ/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 6</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/16I-_aZN31rVM5bmnMXTM2nKXRrWY-TnB/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Razonamiento Matemático 7</h3>
+                    <p>Ejercicios de razonamiento.</p>
+                    <a href="https://drive.google.com/file/d/1iO9JaeVuDyZ7EFj1BZUjCDcrnHdZBddu/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">🎯 Ejercicios de Habilidad</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Ejercicio de Habilidad 1</h3>
+                    <p>Ejercicios de habilidades.</p>
+                    <a href="https://drive.google.com/file/d/1DGJDkKsXmOTCNlZPe_YxJeRPjymlUyeh/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Ejercicio de Habilidad 2</h3>
+                    <p>Ejercicios de habilidades.</p>
+                    <a href="https://drive.google.com/file/d/1Z1WVLEAsxqyZUlmJ6kPi5h2TtH1lqo_E/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">📊 Estadística</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Estadística 1</h3>
+                    <p>Ejercicios de estadística.</p>
+                    <a href="https://drive.google.com/file/d/1gytJR_vTmVrF5wu68GxTU1lWFTsvhhvD/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Estadística 2</h3>
+                    <p>Ejercicios de estadística.</p>
+                    <a href="https://drive.google.com/file/d/1ANw3zkYsGZXwLGrcJyVHeBR3wo1-99oi/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Estadística 3</h3>
+                    <p>Ejercicios de estadística.</p>
+                    <a href="https://drive.google.com/file/d/1VhMc-vEciwcwVYt27khTmPk3SGotLfpP/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Estadística 4</h3>
+                    <p>Ejercicios de estadística.</p>
+                    <a href="https://drive.google.com/file/d/1QoumjMul_tinrfVLmKk7zT1k_Mq8oIn6/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Estadística 5</h3>
+                    <p>Ejercicios de estadística.</p>
+                    <a href="https://drive.google.com/file/d/1Whyu7q9u1cs-plG-fFLMrMlSmtZNPhzS/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Estadística 6</h3>
+                    <p>Ejercicios de estadística.</p>
+                    <a href="https://drive.google.com/file/d/1ULygfraAfvUjkk1JtPLqL4ztk2y-NnQ1/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">📚 Comprensión Lectora</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Comprensión Lectora 1</h3>
+                    <p>Ejercicios de comprensión.</p>
+                    <a href="https://drive.google.com/file/d/1vn9mPzlAuLfuKaxPbD3axui3BoTMAOGP/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Comprensión Lectora 2</h3>
+                    <p>Ejercicios de comprensión.</p>
+                    <a href="https://drive.google.com/file/d/1QmWIy0C-vT5pc4iBlOAdrsVktm8HLZT0/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Comprensión Lectora 3</h3>
+                    <p>Ejercicios de comprensión.</p>
+                    <a href="https://drive.google.com/file/d/1KrF9O0TerNHT3kIKjxiin948frmiw2r5/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Comprensión Lectora 4</h3>
+                    <p>Ejercicios de comprensión.</p>
+                    <a href="https://drive.google.com/file/d/1E_19EzIW-rMfTrlcCtLZeUrLtV2IWE2a/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Comprensión Lectora 5</h3>
+                    <p>Ejercicios de comprensión.</p>
+                    <a href="https://drive.google.com/file/d/10CUipZPGvx6OtJOc6dkS-qXiK7kLAJbb/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Comprensión Lectora 6</h3>
+                    <p>Ejercicios de comprensión.</p>
+                    <a href="https://drive.google.com/file/d/1H2iDn4iKa7BROC5vpEVHSBb6V3M3koqs/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">📖 Análisis e Interpretación de Textos</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Análisis de Textos 1</h3>
+                    <p>Ejercicios de análisis.</p>
+                    <a href="https://drive.google.com/file/d/1IPcg2a7gOfc8sqB7_ljIjMF1p9YD2ZK4/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Análisis de Textos 2</h3>
+                    <p>Ejercicios de análisis.</p>
+                    <a href="https://drive.google.com/file/d/1fay1NzdC7n-SdsmDqrW13ID715emXGP6/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Análisis de Textos 3</h3>
+                    <p>Ejercicios de análisis.</p>
+                    <a href="https://drive.google.com/file/d/1UPdxofns1G3_DNRbtPtEBJn231MvQm2n/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Análisis de Textos 4</h3>
+                    <p>Ejercicios de análisis.</p>
+                    <a href="https://drive.google.com/file/d/1WTV-0j-kwv-ukvM-B-gSS1uRer0-rOsM/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">➗ Álgebra</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Álgebra 1</h3>
+                    <p>Ejercicios de álgebra.</p>
+                    <a href="https://drive.google.com/file/d/1yTbvwUWNOIKQ37d0Mdu8yzjJ8713OnMV/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Álgebra 2</h3>
+                    <p>Ejercicios de álgebra.</p>
+                    <a href="https://drive.google.com/file/d/1qSzsxTEHi8QdnYUwjAMlNGH5gycKxROt/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Álgebra 3</h3>
+                    <p>Ejercicios de álgebra.</p>
+                    <a href="https://drive.google.com/file/d/10Er7wCu7LyMRDpGSiPqog4ePIHrCCTc2/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Álgebra 4</h3>
+                    <p>Ejercicios de álgebra.</p>
+                    <a href="https://drive.google.com/file/d/18Qxixgfb1tlp-MTUKJzuO1aRtst3I3yG/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Álgebra 5</h3>
+                    <p>Ejercicios de álgebra.</p>
+                    <a href="https://drive.google.com/file/d/1_Ayqw_FGjG-KEn7H4XOgkT5O4BDvT4Ya/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                <div class="card">
+                    <h3>📖 Álgebra 6</h3>
+                    <p>Ejercicios de álgebra.</p>
+                    <a href="https://drive.google.com/file/d/1GRXRr2t85GR0iP3bLhAWZk8jAropzgIE/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">📝 Exámenes de Práctica</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Actividades de Matemáticas</h3>
+                    <p>Mini examen de práctica.</p>
+                    <a href="https://drive.google.com/file/d/1Kz20tIZQZhIq50FYx_T8VlM53Bm4zTei/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 EXAMEN Real</h3>
+                    <p>Examen con actividades reales.</p>
+                    <a href="https://drive.google.com/file/d/1EGhc8MF84yh9p99Nnc49FzTnXeNAjPNC/view?usp=sharing" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+
+            <h2 class="subsection-title" style="margin-top: 3rem;">✍️ Redacción</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>📖 Redacción Indirecta 1</h3>
+                    <p>Ejercicios de redacción.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1XLMloIPe1TDRq0NyqH8gVL67UHnAsHdD" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Redacción Indirecta 2</h3>
+                    <p>Ejercicios de redacción.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1UPfsIH90IlxtTHj-Bra3PGNIwnh9SzgU" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Redacción Indirecta 3</h3>
+                    <p>Ejercicios de redacción.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1UPfsIH90IlxtTHj-Bra3PGNIwnh9SzgU" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Redacción Indirecta 4</h3>
+                    <p>Ejercicios de redacción.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1XLa6k6-7yKMGoOgmuCGGl1uRduZxg3hv" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Retos Evolvi Redacción 1</h3>
+                    <p>Retos de práctica.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1tlQSq5hCv-jkgjp8UQF_MR8dkiUgXHC-" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Retos Evolvi Redacción 2</h3>
+                    <p>Retos de práctica.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1YERJLrx2j7NoGMpbXGSxl3Ug8YvTrUSL" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Retos Evolvi Redacción 3</h3>
+                    <p>Retos de práctica.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=12YdJN_KzABAFXTvKFIB24zcVJWhBOApf" class="pdf-link" target="_blank">📥 Ver o descargar PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para cambiar el fondo
+function toggleBackground() {
+    document.body.classList.toggle('with-background');
+}
+
+// Cuenta regresiva
+function updateCountdown() {
+    const now = new Date();
+    const targetDate = new Date(now.getTime() + (22 * 24 * 60 * 60 * 1000));
+    
+    function updateTimer() {
+        const currentTime = new Date().getTime();
+        const distance = targetDate - currentTime;
+        
+        if (distance < 0) {
+            document.getElementById('days').textContent = '00';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            return;
+        }
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+// Estado en memoria del calendario
+let calendarData = {
+    completedDays: [],
+    currentStreak: 0,
+    bestStreak: 0
+};
+
+// Inicializar calendario al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    initCalendar();
+    updateCountdown();
+});
+
+function initCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    for (let i = 1; i <= 30; i++) {
+        const dayCard = document.createElement('div');
+        dayCard.className = 'day-card';
+        dayCard.id = `day-${i}`;
+        
+        if (calendarData.completedDays.includes(i)) {
+            dayCard.classList.add('completed');
+        }
+        
+        dayCard.innerHTML = `
+            <span class="checkmark">✓</span>
+            <span class="day-number">${i}</span>
+            <span class="day-label">Día</span>
+        `;
+        
+        dayCard.onclick = () => toggleDay(i);
+        grid.appendChild(dayCard);
+    }
+    
+    updateStats();
+}
+
+function toggleDay(dayNumber) {
+    const dayCard = document.getElementById(`day-${dayNumber}`);
+    
+    if (calendarData.completedDays.includes(dayNumber)) {
+        calendarData.completedDays = calendarData.completedDays.filter(d => d !== dayNumber);
+        dayCard.classList.remove('completed');
+    } else {
+        calendarData.completedDays.push(dayNumber);
+        calendarData.completedDays.sort((a, b) => a - b);
+        dayCard.classList.add('completed');
+        
+        dayCard.style.transform = 'scale(1.2) rotate(5deg)';
+        setTimeout(() => {
+            dayCard.style.transform = '';
+        }, 300);
+    }
+    
+    calculateStreaks();
+    updateStats();
+}
+
+function calculateStreaks() {
+    if (calendarData.completedDays.length === 0) {
+        calendarData.currentStreak = 0;
+        calendarData.bestStreak = 0;
+        return;
+    }
+    
+    const sorted = [...calendarData.completedDays].sort((a, b) => a - b);
+    let best = 1;
+    let temp = 1;
+    
+    for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i] === sorted[i - 1] + 1) {
+            temp++;
+        } else {
+            temp = 1;
+        }
+        best = Math.max(best, temp);
+    }
+    
+    temp = 1;
+    for (let i = sorted.length - 1; i > 0; i--) {
+        if (sorted[i] === sorted[i - 1] + 1) {
+            temp++;
+        } else {
+            break;
+        }
+    }
+    
+    calendarData.currentStreak = temp;
+    calendarData.bestStreak = Math.max(best, calendarData.bestStreak);
+}
+
+function updateStats() {
+    const currentStreakEl = document.getElementById('currentStreak');
+    const totalCompletedEl = document.getElementById('totalCompleted');
+    const bestStreakEl = document.getElementById('bestStreak');
+    
+    if (currentStreakEl) currentStreakEl.textContent = calendarData.currentStreak;
+    if (totalCompletedEl) totalCompletedEl.textContent = calendarData.completedDays.length;
+    if (bestStreakEl) bestStreakEl.textContent = calendarData.bestStreak;
+    
+    if (calendarData.completedDays.length === 30) {
+        setTimeout(() => {
+            alert('🎉🏆 ¡INCREÍBLE! Completaste los 30 días de estudio. ¡Eres un campeón! 🏆🎉');
+        }, 300);
+    }
+}
+
+function resetCalendar() {
+    if (confirm('¿Estás seguro de que quieres reiniciar el calendario? Se perderá todo tu progreso.')) {
+        calendarData = {
+            completedDays: [],
+            currentStreak: 0,
+            bestStreak: 0
+        };
+        initCalendar();
+    }
+}
+
+function showSection(sectionName) {
+    const sections = document.querySelectorAll('.section');
+    const buttons = document.querySelectorAll('.nav-btn');
+    
+    sections.forEach(section => section.classList.remove('active'));
+    buttons.forEach(button => button.classList.remove('active'));
+    
+    document.getElementById(sectionName).classList.add('active');
+    event.target.classList.add('active');
+}
+    </script>
+    <footer>
+  <img src="perro.png" alt="Hecha por Nenorro" style="width:200px; border-radius:50px;">
+  <h3 style="font-weight:bold; font-family:Arial, sans-serif;">Hecha por Nenorro</h3>
+</footer>
+
+<script>
+  // --- CONFIGURACIÓN: 22 días desde hoy ---
+  const daysToAdd = 22;
+
+  // Revisa si ya hay una fecha guardada
+  let targetDate = localStorage.getItem("targetDate");
+
+  if (!targetDate) {
+    // Si no existe, se crea una nueva (22 días desde hoy)
+    const now = new Date();
+    targetDate = now.getTime() + daysToAdd * 24 * 60 * 60 * 1000;
+    localStorage.setItem("targetDate", targetDate);
+  } else {
+    // Convierte el valor guardado a número
+    targetDate = parseInt(targetDate);
+  }
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    let distance = targetDate - now;
+
+    if (distance < 0) {
+      distance = 0;
+      localStorage.removeItem("targetDate"); // Reinicia cuando llega a 0
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = days;
+    document.getElementById("hours").innerText = hours.toString().padStart(2, "0");
+    document.getElementById("minutes").innerText = minutes.toString().padStart(2, "0");
+    document.getElementById("seconds").innerText = seconds.toString().padStart(2, "0");
+  }
+
+  // Actualiza cada segundo
+  setInterval(updateCountdown, 1000);
+  updateCountdown(); // Actualiza al cargar
+</script>
+</body>
+</html>
