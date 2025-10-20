@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+        <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Plataforma de Estudio</title>
@@ -16,12 +16,47 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
             color: #e0e0e0;
             min-height: 100vh;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        body.with-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('perro.png') center/cover no-repeat fixed;
+            opacity:  0.4;
+            z-index: -1;
         }
 
         header {
             background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
             padding: 1.5rem 2rem;
             box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+            position: relative;
+        }
+
+        .background-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+        }
+
+        .background-toggle:hover {
+            background: linear-gradient(45deg, #9d4edd, #bb86fc);
+            transform: scale(1.05);
         }
 
         h1 {
@@ -36,6 +71,53 @@
             color: #9d4edd;
             font-size: 0.9rem;
             margin-top: 0.5rem;
+        }
+
+        .countdown-container {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(145deg, rgba(123, 44, 191, 0.3), rgba(157, 78, 221, 0.3));
+            border-radius: 15px;
+            border: 2px solid rgba(187, 134, 252, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-title {
+            color: #bb86fc;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            min-width: 80px;
+            box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+        }
+
+        .time-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .time-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            margin-top: 0.3rem;
         }
 
         nav {
@@ -322,17 +404,47 @@
             .subsection-title {
                 font-size: 1.4rem;
             }
+
+            .background-toggle {
+                position: static;
+                margin: 1rem auto 0;
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>📚 La Mega Plataforma de Estudio</h1>
-        <p class="subtitle">Versión Mejorada - 100% Funcional</p>
+        <button class="background-toggle" onclick="toggleBackground()">🖼️ El que lo lea es gay, Fondo</button>
+        <h1>📚 La maldita plataforma super xxx</h1>
+        <p class="subtitle">Versión no recuerdo de tanto que la modifique</p>
+        
+        <div class="countdown-container">
+            <div class="countdown-title">⏰ Cuenta Regresiva para el putisimo Examen</div>
+            <div class="countdown-timer">
+                <div class="time-box">
+                    <span class="time-value" id="days">22</span>
+                    <span class="time-label">Días</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">Horas</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">Minutos</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Segundos</span>
+                </div>
+            </div>
+        </div>
+        
         <nav>
             <button class="nav-btn active" onclick="showSection('videos')">🎥 Videos</button>
-            <button class="nav-btn" onclick="showSection('pdfs')">📄 PDFs</button>
-            <button class="nav-btn" onclick="showSection('practicas')">✏️ Prácticas</button>
+            <button class="nav-btn" onclick="showSection('pdfs')">📄 PDF</button>
+            <button class="nav-btn" onclick="showSection('practicas')">✏️ Prácticas, Ejercicios y Examenes</button>
         </nav>
     </header>
 
@@ -359,8 +471,8 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Clases Regulares -->
+        
+            <!-- Clases Regulares --> 
             <div class="video-subsection">
                 <h2 class="subsection-title">📚 Clases Regulares</h2>
                 <div class="content-grid">
@@ -623,7 +735,7 @@
         </div>
     </div>
 
-        <!-- Sección de Prácticas -->
+    <!-- Sección de Prácticas -->
         <div id="practicas" class="section">
             <!-- Calendario de 30 Días -->
             <div class="calendar-section">
@@ -947,142 +1059,221 @@
     </div>
 
     <script>
-        // Estado en memoria del calendario
-        let calendarData = {
+        // Función para cambiar el fondo
+function toggleBackground() {
+    document.body.classList.toggle('with-background');
+}
+
+// Cuenta regresiva
+function updateCountdown() {
+    const now = new Date();
+    const targetDate = new Date(now.getTime() + (22 * 24 * 60 * 60 * 1000));
+    
+    function updateTimer() {
+        const currentTime = new Date().getTime();
+        const distance = targetDate - currentTime;
+        
+        if (distance < 0) {
+            document.getElementById('days').textContent = '00';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            return;
+        }
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+// Estado en memoria del calendario
+let calendarData = {
+    completedDays: [],
+    currentStreak: 0,
+    bestStreak: 0
+};
+
+// Inicializar calendario al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    initCalendar();
+    updateCountdown();
+});
+
+function initCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    for (let i = 1; i <= 30; i++) {
+        const dayCard = document.createElement('div');
+        dayCard.className = 'day-card';
+        dayCard.id = `day-${i}`;
+        
+        if (calendarData.completedDays.includes(i)) {
+            dayCard.classList.add('completed');
+        }
+        
+        dayCard.innerHTML = `
+            <span class="checkmark">✓</span>
+            <span class="day-number">${i}</span>
+            <span class="day-label">Día</span>
+        `;
+        
+        dayCard.onclick = () => toggleDay(i);
+        grid.appendChild(dayCard);
+    }
+    
+    updateStats();
+}
+
+function toggleDay(dayNumber) {
+    const dayCard = document.getElementById(`day-${dayNumber}`);
+    
+    if (calendarData.completedDays.includes(dayNumber)) {
+        calendarData.completedDays = calendarData.completedDays.filter(d => d !== dayNumber);
+        dayCard.classList.remove('completed');
+    } else {
+        calendarData.completedDays.push(dayNumber);
+        calendarData.completedDays.sort((a, b) => a - b);
+        dayCard.classList.add('completed');
+        
+        dayCard.style.transform = 'scale(1.2) rotate(5deg)';
+        setTimeout(() => {
+            dayCard.style.transform = '';
+        }, 300);
+    }
+    
+    calculateStreaks();
+    updateStats();
+}
+
+function calculateStreaks() {
+    if (calendarData.completedDays.length === 0) {
+        calendarData.currentStreak = 0;
+        calendarData.bestStreak = 0;
+        return;
+    }
+    
+    const sorted = [...calendarData.completedDays].sort((a, b) => a - b);
+    let best = 1;
+    let temp = 1;
+    
+    for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i] === sorted[i - 1] + 1) {
+            temp++;
+        } else {
+            temp = 1;
+        }
+        best = Math.max(best, temp);
+    }
+    
+    temp = 1;
+    for (let i = sorted.length - 1; i > 0; i--) {
+        if (sorted[i] === sorted[i - 1] + 1) {
+            temp++;
+        } else {
+            break;
+        }
+    }
+    
+    calendarData.currentStreak = temp;
+    calendarData.bestStreak = Math.max(best, calendarData.bestStreak);
+}
+
+function updateStats() {
+    const currentStreakEl = document.getElementById('currentStreak');
+    const totalCompletedEl = document.getElementById('totalCompleted');
+    const bestStreakEl = document.getElementById('bestStreak');
+    
+    if (currentStreakEl) currentStreakEl.textContent = calendarData.currentStreak;
+    if (totalCompletedEl) totalCompletedEl.textContent = calendarData.completedDays.length;
+    if (bestStreakEl) bestStreakEl.textContent = calendarData.bestStreak;
+    
+    if (calendarData.completedDays.length === 30) {
+        setTimeout(() => {
+            alert('🎉🏆 ¡INCREÍBLE! Completaste los 30 días de estudio. ¡Eres un campeón! 🏆🎉');
+        }, 300);
+    }
+}
+
+function resetCalendar() {
+    if (confirm('¿Estás seguro de que quieres reiniciar el calendario? Se perderá todo tu progreso.')) {
+        calendarData = {
             completedDays: [],
             currentStreak: 0,
             bestStreak: 0
         };
+        initCalendar();
+    }
+}
 
-        // Inicializar calendario al cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            initCalendar();
-        });
-
-        function initCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            if (!grid) return; // Si no existe el calendario, salir
-            
-            grid.innerHTML = '';
-            
-            for (let i = 1; i <= 30; i++) {
-                const dayCard = document.createElement('div');
-                dayCard.className = 'day-card';
-                dayCard.id = `day-${i}`;
-                
-                if (calendarData.completedDays.includes(i)) {
-                    dayCard.classList.add('completed');
-                }
-                
-                dayCard.innerHTML = `
-                    <span class="checkmark">✓</span>
-                    <span class="day-number">${i}</span>
-                    <span class="day-label">Día</span>
-                `;
-                
-                dayCard.onclick = () => toggleDay(i);
-                grid.appendChild(dayCard);
-            }
-            
-            updateStats();
-        }
-
-        function toggleDay(dayNumber) {
-            const dayCard = document.getElementById(`day-${dayNumber}`);
-            
-            if (calendarData.completedDays.includes(dayNumber)) {
-                // Desmarcar día
-                calendarData.completedDays = calendarData.completedDays.filter(d => d !== dayNumber);
-                dayCard.classList.remove('completed');
-            } else {
-                // Marcar día como completado
-                calendarData.completedDays.push(dayNumber);
-                calendarData.completedDays.sort((a, b) => a - b);
-                dayCard.classList.add('completed');
-                
-                // Animación de celebración
-                dayCard.style.transform = 'scale(1.2) rotate(5deg)';
-                setTimeout(() => {
-                    dayCard.style.transform = '';
-                }, 300);
-            }
-            
-            calculateStreaks();
-            updateStats();
-        }
-
-        function calculateStreaks() {
-            if (calendarData.completedDays.length === 0) {
-                calendarData.currentStreak = 0;
-                calendarData.bestStreak = 0;
-                return;
-            }
-            
-            const sorted = [...calendarData.completedDays].sort((a, b) => a - b);
-            let best = 1;
-            let temp = 1;
-            
-            for (let i = 1; i < sorted.length; i++) {
-                if (sorted[i] === sorted[i - 1] + 1) {
-                    temp++;
-                } else {
-                    temp = 1;
-                }
-                best = Math.max(best, temp);
-            }
-            
-            // La racha actual es la última secuencia consecutiva
-            temp = 1;
-            for (let i = sorted.length - 1; i > 0; i--) {
-                if (sorted[i] === sorted[i - 1] + 1) {
-                    temp++;
-                } else {
-                    break;
-                }
-            }
-            
-            calendarData.currentStreak = temp;
-            calendarData.bestStreak = Math.max(best, calendarData.bestStreak);
-        }
-
-        function updateStats() {
-            const currentStreakEl = document.getElementById('currentStreak');
-            const totalCompletedEl = document.getElementById('totalCompleted');
-            const bestStreakEl = document.getElementById('bestStreak');
-            
-            if (currentStreakEl) currentStreakEl.textContent = calendarData.currentStreak;
-            if (totalCompletedEl) totalCompletedEl.textContent = calendarData.completedDays.length;
-            if (bestStreakEl) bestStreakEl.textContent = calendarData.bestStreak;
-            
-            // Mensaje motivacional
-            if (calendarData.completedDays.length === 30) {
-                setTimeout(() => {
-                    alert('🎉🏆 ¡INCREÍBLE! Completaste los 30 días de estudio. ¡Eres un campeón! 🏆🎉');
-                }, 300);
-            }
-        }
-
-        function resetCalendar() {
-            if (confirm('¿Estás seguro de que quieres reiniciar el calendario? Se perderá todo tu progreso.')) {
-                calendarData = {
-                    completedDays: [],
-                    currentStreak: 0,
-                    bestStreak: 0
-                };
-                initCalendar();
-            }
-        }
-
-        function showSection(sectionName) {
-            const sections = document.querySelectorAll('.section');
-            const buttons = document.querySelectorAll('.nav-btn');
-            
-            sections.forEach(section => section.classList.remove('active'));
-            buttons.forEach(button => button.classList.remove('active'));
-            
-            document.getElementById(sectionName).classList.add('active');
-            event.target.classList.add('active');
-        }
+function showSection(sectionName) {
+    const sections = document.querySelectorAll('.section');
+    const buttons = document.querySelectorAll('.nav-btn');
+    
+    sections.forEach(section => section.classList.remove('active'));
+    buttons.forEach(button => button.classList.remove('active'));
+    
+    document.getElementById(sectionName).classList.add('active');
+    event.target.classList.add('active');
+}
     </script>
+    <footer>
+  <img src="perro.png" alt="Hecha por Nenorro" style="width:200px; border-radius:50px;">
+  <h3 style="font-weight:bold; font-family:Arial, sans-serif;">Hecha por Nenorro</h3>
+</footer>
+
+<script>
+  // --- CONFIGURACIÓN: 22 días desde hoy ---
+  const daysToAdd = 22;
+
+  // Revisa si ya hay una fecha guardada
+  let targetDate = localStorage.getItem("targetDate");
+
+  if (!targetDate) {
+    // Si no existe, se crea una nueva (22 días desde hoy)
+    const now = new Date();
+    targetDate = now.getTime() + daysToAdd * 24 * 60 * 60 * 1000;
+    localStorage.setItem("targetDate", targetDate);
+  } else {
+    // Convierte el valor guardado a número
+    targetDate = parseInt(targetDate);
+  }
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    let distance = targetDate - now;
+
+    if (distance < 0) {
+      distance = 0;
+      localStorage.removeItem("targetDate"); // Reinicia cuando llega a 0
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = days;
+    document.getElementById("hours").innerText = hours.toString().padStart(2, "0");
+    document.getElementById("minutes").innerText = minutes.toString().padStart(2, "0");
+    document.getElementById("seconds").innerText = seconds.toString().padStart(2, "0");
+  }
+
+  // Actualiza cada segundo
+  setInterval(updateCountdown, 1000);
+  updateCountdown(); // Actualiza al cargar
+</script>
 </body>
 </html>
