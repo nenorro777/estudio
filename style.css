@@ -1,3 +1,406 @@
-.practiquen{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    position: relative;
+    transition: background 0.5s ease;
+}
+
+    body.with-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('perro.png') center/cover no-repeat fixed;
+            opacity:   0.4;
+            z-index: -1;
+        }
+
+header {
+    background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+    position: relative;
+}
+
+.background-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+}
+
+.background-toggle:hover {
+    background: linear-gradient(45deg, #9d4edd, #bb86fc);
+    transform: scale(1.05);
+}
+
+h1 {
+    color: #bb86fc;
+    font-size: 2rem;
     text-align: center;
+    text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+}
+
+.subtitle {
+    text-align: center;
+    color: #9d4edd;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.countdown-container {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, rgba(123, 44, 191, 0.3), rgba(157, 78, 221, 0.3));
+    border-radius: 15px;
+    border: 2px solid rgba(187, 134, 252, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.countdown-title {
+    color: #bb86fc;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.time-box {
+    background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    min-width: 80px;
+    box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+}
+
+.time-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.time-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #e0e0e0;
+    margin-top: 0.3rem;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+    border: none;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.6);
+    background: linear-gradient(45deg, #9d4edd, #bb86fc);
+}
+
+.nav-btn.active {
+    background: linear-gradient(45deg, #bb86fc, #d4a5ff);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: linear-gradient(145deg, #1e1e2e, #252535);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(187, 134, 252, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(187, 134, 252, 0.4);
+    border-color: #bb86fc;
+}
+
+.card h3 {
+    color: #bb86fc;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.card p {
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #000;
+    margin: 1rem 0;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.pdf-link {
+    display: inline-block;
+    background: linear-gradient(45deg, #5a189a, #7209b7);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.pdf-link:hover {
+    background: linear-gradient(45deg, #7209b7, #9d4edd);
+    transform: scale(1.05);
+}
+
+.pdf-info {
+    background: rgba(187, 134, 252, 0.1);
+    padding: 0.8rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.video-subsection {
+    margin-bottom: 3rem;
+}
+
+.subsection-title {
+    color: #d4a5ff;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(187, 134, 252, 0.3);
+    text-shadow: 0 0 10px rgba(212, 165, 255, 0.3);
+}
+
+.calendar-section {
+    background: linear-gradient(145deg, #1e1e2e, #252535);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(187, 134, 252, 0.2);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.streak-info {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.streak-box {
+    background: linear-gradient(45deg, #7b2cbf, #9d4edd);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(125, 44, 191, 0.4);
+}
+
+.streak-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    display: block;
+}
+
+.streak-label {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    margin-top: 0.3rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.day-card {
+    background: rgba(30, 30, 46, 0.6);
+    border: 2px solid rgba(187, 134, 252, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.day-card:hover {
+    transform: translateY(-3px);
+    border-color: #bb86fc;
+    box-shadow: 0 4px 15px rgba(187, 134, 252, 0.3);
+}
+
+.day-card.completed {
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    border-color: #4caf50;
+}
+
+.day-card.completed .checkmark {
+    display: block;
+}
+
+.day-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #bb86fc;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.day-card.completed .day-number {
+    color: white;
+}
+
+.day-label {
+    font-size: 0.75rem;
+    color: #b0b0b0;
+}
+
+.day-card.completed .day-label {
+    color: white;
+}
+
+.checkmark {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.goal-text {
+    color: #d4a5ff;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.reset-btn {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+    background: linear-gradient(45deg, #c0392b, #a93226);
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .subsection-title {
+        font-size: 1.4rem;
+    }
+
+    .background-toggle {
+        position: static;
+        margin: 1rem auto 0;
+        display: block;
+    }
 }
